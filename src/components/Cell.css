@@ -1,0 +1,27 @@
+.cell-wrapper {
+  padding: 10px;
+  width: fit-content;
+  background-color: gainsboro;
+  cursor: pointer;
+}
+.square {
+  width: 50px;
+  height: 50px;
+}
+.circle {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+.selected.color-red {
+  background-color: rgb(195, 62, 62);
+}
+.selected.color-green {
+  background-color: rgb(32, 163, 109);
+}
+.selected.color-blue {
+  background-color: rgb(62, 131, 199);
+}
+.selected.color-yellow {
+  background-color: rgb(188, 188, 65);
+}
