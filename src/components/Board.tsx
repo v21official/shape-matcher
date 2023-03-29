@@ -52,14 +52,16 @@ const Board: React.FC = () => {
   };
 
   const handlePlayAgain = () => {
-    setItems(generateShapeAndColor());
-    setCountRetry(0);
+    if (countRetry) {
+      setItems(generateShapeAndColor());
+      setCountRetry(0);
+    }
   };
 
   return (
     <>
       <p>Number of guess: {countRetry}</p>
-      <div className="board">
+      <div className="board" data-testid="board-element">
         {items.map((item, index) => (
           <Cell key={index} {...item} handleClick={() => handleCellClick(index)} />
         ))}

@@ -10,7 +10,7 @@ export interface CellProps {
 }
 
 const Cell: React.FC<CellProps> = (props: CellProps) => {
-  return <div className="cell-wrapper" onClick={!props.selected ? props.handleClick : () => {}}>
+  return <div className="cell-wrapper" data-testid="cell-element" onClick={!props.selected ? props.handleClick : () => {}}>
     <div className={`${props.shape} color-${props.color} ${!!props.selected && 'selected'}`} />
   </div>
 };

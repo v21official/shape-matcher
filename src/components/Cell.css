@@ -2,6 +2,7 @@
   padding: 10px;
   width: fit-content;
   background-color: gainsboro;
+  cursor: pointer;
 }
 .square {
   width: 50px;
