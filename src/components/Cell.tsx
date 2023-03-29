@@ -1,7 +1,8 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import './Cell.css';
 
 export interface CellProps {
+  id: number;
   shape: string;
   color: string;
   selected?: boolean;
@@ -9,8 +10,8 @@ export interface CellProps {
 }
 
 const Cell: React.FC<CellProps> = (props: CellProps) => {
-  return <div className="cell-wrapper" onClick={props.handleClick}>
-    <div className={`${props.shape} color-${props.color} ${!!props.selected ? 'selected' : 'hide'}`} />
+  return <div className="cell-wrapper" onClick={!props.selected ? props.handleClick : () => {}}>
+    <div className={`${props.shape} color-${props.color} ${!!props.selected && 'selected'}`} />
   </div>
 };
 

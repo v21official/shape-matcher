@@ -4,51 +4,68 @@ import './Board.css';
 
 const generateShapeAndColor = () => {
   return [
-    { shape: "circle", color: 'red' },
-    { shape: "circle", color: 'red' },
-    { shape: "circle", color: 'green' },
-    { shape: "circle", color: 'green' },
-    { shape: "circle", color: 'yellow' },
-    { shape: "circle", color: 'yellow' },
-    { shape: "circle", color: 'blue' },
-    { shape: "circle", color: 'blue' },
-    { shape: "square", color: 'red' },
-    { shape: "square", color: 'red' },
-    { shape: "square", color: 'green' },
-    { shape: "square", color: 'green' },
-    { shape: "square", color: 'yellow' },
-    { shape: "square", color: 'yellow' },
-    { shape: "square", color: 'blue' },
-    { shape: "square", color: 'blue' },
+    { id: 1, shape: "circle", color: 'red' },
+    { id: 2, shape: "circle", color: 'red' },
+    { id: 3, shape: "circle", color: 'green' },
+    { id: 4, shape: "circle", color: 'green' },
+    { id: 5, shape: "circle", color: 'yellow' },
+    { id: 6, shape: "circle", color: 'yellow' },
+    { id: 7, shape: "circle", color: 'blue' },
+    { id: 8, shape: "circle", color: 'blue' },
+    { id: 9, shape: "square", color: 'red' },
+    { id: 10, shape: "square", color: 'red' },
+    { id: 11, shape: "square", color: 'green' },
+    { id: 12, shape: "square", color: 'green' },
+    { id: 13, shape: "square", color: 'yellow' },
+    { id: 14, shape: "square", color: 'yellow' },
+    { id: 15, shape: "square", color: 'blue' },
+    { id: 16, shape: "square", color: 'blue' },
   ].sort(() => Math.random() - 0.5) as CellProps[]
 }
 
 const Board: React.FC = () => {
   const [items, setItems] = useState<CellProps[]>(generateShapeAndColor());
   const [itemSelected, setItemSelected] = useState<CellProps[]>([]);
+  const [countRetry, setCountRetry] = useState(0);
   
   useEffect(() => {
-    if (itemSelected.length === 2) {
-      // handle check matched
-      setItemSelected([]);
+    if (itemSelected.length === 1) {
+      setItems((prev) => prev.map((item) => itemSelected[0].id === item.id ? ({ ...item, selected: true }) : item));
+    } else if (itemSelected.length === 2) {
+      setCountRetry((prev) => ++prev);
+      setItems((prev) => prev.map((item) => [first.id, second.id].includes(item.id) ? ({ ...item, selected: true }) : item));
+      const [first, second] = itemSelected;
+      if (first.color === second.color && first.shape === second.shape) {
+        setItemSelected([]);
+      } else {
+        setTimeout(() => {
+          setItems((prev) => prev.map((item) => [first.id, second.id].includes(item.id) ? ({ ...item, selected: false }) : item));
+          setItemSelected([]);
+        }, 1000);
+      }
     }
-    // Initialize the game board with random shapes and colors
   }, [itemSelected]);
 
-  const handleCellClick = (index: number) => {
-    // Reveal cell, check for matches, update game state, and handle game completion
-    const updateItem = items[index];
-    updateItem.selected = true;
-    setItems((prev) => prev.map((item, i) => index === i ? updateItem : item));
+
+  const handleCellClick = async (index: number) => {
     setItemSelected((prev) => [...prev, items[index]]);
   };
 
+  const handlePlayAgain = () => {
+    setItems(generateShapeAndColor());
+    setCountRetry(0);
+  };
+
   return (
-    <div className="board">
-      {items.map((item, index) => (
-        <Cell key={index} shape={item.shape} color={item.color} handleClick={() => handleCellClick(index)} />
-      ))}
-    </div>
+    <>
+      <p>Number of guess: {countRetry}</p>
+      <div className="board">
+        {items.map((item, index) => (
+          <Cell key={index} {...item} handleClick={() => handleCellClick(index)} />
+        ))}
+      </div>
+      <button className='btn-try-again' onClick={handlePlayAgain}>PLAY AGAIN</button>
+    </>
   );
 };
 
